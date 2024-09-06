@@ -126,11 +126,7 @@
       <% } %>
       <nav class="nav-wrapper">
         <% pageIssueList.forEach(function(issue){ %>
-        <% if (currentPage === 1) { %>
           <a class="nav-item" href="./pages/<%= issue.id%>.html">
-        <% } else { %>
-          <a class="nav-item" href="../pages/<%= issue.id%>.html">
-        <% } %>
           <div class="nav-item--title"><%= issue.title %></div>
           <div class="nav-item--infos">
             <% if (issue.labels && issue.labels.length) { %>
@@ -149,19 +145,15 @@
         <div class="pagination">
           <% if (hasPrev) { %>
             <% if (currentPage === 2) { %>
-              <a class="previous_page" aria-label="Previous Page" href="../index.html">Prev</a>
+          <a class="previous_page" aria-label="Previous Page" href="./index.html">Prev</a>
             <% } else { %>
-                <a class="previous_page" aria-label="Previous Page" href="./page<%= currentPage - 1%>.html">Prev</a>
+          <a class="previous_page" aria-label="Previous Page" href="./page<%= currentPage - 1%>.html">Prev</a>
             <% }%>
           <% } else { %>
             <span class="previous_page disabled" aria-label="Previous Page" aria-disabled="true">Prev</span>
           <% } %>
           <% if (hasNext) { %>
-            <% if (currentPage === 1) { %>
-                <a class="next_page" aria-label="Next Page" href="./pager/page<%= currentPage + 1%>.html">Next</a>
-            <%} else {%>
-                <a class="next_page" aria-label="Next Page" href="./page<%= currentPage + 1%>.html">Next</a>
-            <% } %>
+            <a class="next_page" aria-label="Next Page" href="./page<%= currentPage + 1%>.html">Next</a>
           <% } else { %>
             <span class="next_page disabled" aria-disabled="true">Next</span>
           <% } %>
