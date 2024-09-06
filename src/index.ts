@@ -1,4 +1,4 @@
-import {BlogApi, FileHelper} from "./helper";
+import {Blog, FileHelper} from "./helper";
 
 const main = async () => {
   const args = process.argv.slice(2);
@@ -7,7 +7,7 @@ const main = async () => {
   }
   const [ githubToken, repo ] = args;
   await FileHelper.clearOutputFile();
-  const api = new BlogApi(githubToken, repo);
+  const api = new Blog(githubToken, repo);
   await api.initBlog()
   api.generateHtml();
 };

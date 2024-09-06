@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title><%= title%></title>
     <link href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" rel="stylesheet" />
+    <link href="./assets/css/font-awesome.min.css" rel="stylesheet" />
     <style>
         body {
             padding: 20px;
@@ -14,13 +16,9 @@
             line-height: 1.2;
         }
         .header {
-            padding: 20px 0;
-            border-bottom: 1px solid #d1d9e0;
-        }
-        .header {
+            padding: 20px 0 10px 0;
             border-bottom: 1px solid #d1d9e0;
             margin-bottom: 10px;
-            padding-bottom: 10px;
         }
         .footer {
             margin-top: 64px;
@@ -37,6 +35,7 @@
         }
         @media (max-width: 600px) {
             body {padding: 8px;}
+            .title {font-size: 36px;}
         }
     </style>
 </head>
@@ -47,7 +46,9 @@
             <div class="title"><%= title%></div>
         </div>
         <div class="header-right">
-            <div class="header-right--wrapper"></div>
+            <div class="header-right--wrapper">
+
+            </div>
         </div>
     </header>
     <main class="content">

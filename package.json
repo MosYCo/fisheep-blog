@@ -4,8 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "rollup -c",
-    "build:watch": "rollup -c -w"
+    "build": "cross-env NODE_ENV=prod rollup -c",
+    "build:dev": "cross-env NODE_ENV=dev rollup -c -w"
   },
   "keywords": [],
   "author": "",
@@ -13,12 +13,14 @@
   "description": "",
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/ejs": "^3.1.5",
     "@types/html-minifier": "^4.0.5",
     "@types/node": "^22.5.4",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
@@ -31,6 +33,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "dayjs": "^1.11.13",
     "ejs": "^3.1.10",
     "freemarker": "^2.0.1",
     "html-minifier": "^4.0.0",

@@ -1,10 +1,10 @@
-import BlogApi from "./blog-api";
+import Blog from "./blog";
 import Log from './log';
 import FileHelper from "./file-helper";
 import HtmlHelper from "./html-helper";
 
 export {
-  BlogApi,
+  Blog,
   Log,
   FileHelper,
   HtmlHelper
