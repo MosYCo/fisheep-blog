@@ -14,7 +14,7 @@ class FileHelper {
 
   protected static createDir(dir: string) {
     return new Promise<void>(resolve => {
-      const dirPath = process.cwd() + dir;
+      const dirPath = process.cwd() + `${dir.startsWith('/') ? dir : '/' + dir}`;
       fs.access(dirPath, (err) => {
         console.log("===========================================");
         if (err) {
@@ -29,7 +29,6 @@ class FileHelper {
           }
           console.log("Deleting files successfully...")
         }
-        console.log("===========================================");
         resolve();
       });
     })
