@@ -28,7 +28,14 @@ class BlogApi {
 
   private blogConfig!: BlogConfig;
 
-  constructor(private readonly githubToken: string, private readonly repoName: string, private readonly owner: string) {
+  private readonly repoName!: string;
+
+  private readonly owner!: string;
+
+  constructor(private readonly githubToken: string, private readonly repo: string) {
+    const [owner, repoName] = this.repo.split('/');
+    this.owner = owner;
+    this.repoName = repoName;
     this.init();
   }
 
