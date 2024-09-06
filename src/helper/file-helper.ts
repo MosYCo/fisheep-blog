@@ -1,31 +1,20 @@
 import fs from "node:fs";
 import * as process from "node:process";
-const OUTPUT_ROOT_DIR = "output" as const;
+import {
+  ROOT_DIR,
+  BACKUP_PATH
+} from '../config/path-config';
 
 class FileHelper {
   static async clearOutputFile() {
-    await this.createRootDir();
-    await this.clearDirFile("backup");
-    await this.clearDirFile("pager");
-    await this.clearDirFile("pages");
+    await this.createDir(ROOT_DIR);
+    await this.createDir(BACKUP_PATH);
+    await this.createDir(`/${ROOT_DIR}/pages`);
   }
 
-  protected static createRootDir() {
-    const rootDir = process.cwd() + `/${OUTPUT_ROOT_DIR}`;
+  protected static createDir(dir: string) {
     return new Promise<void>(resolve => {
-      fs.access(rootDir, (err) => {
-        if (err) {
-          console.log("The output root directory does not exist, create it...");
-          fs.mkdirSync(rootDir);
-        }
-        resolve();
-      })
-    })
-  }
-
-  protected static clearDirFile(dir: string) {
-    return new Promise<void>(resolve => {
-      const dirPath = process.cwd() + `/${OUTPUT_ROOT_DIR}/${dir}`;
+      const dirPath = process.cwd() + dir;
       fs.access(dirPath, (err) => {
         console.log("===========================================");
         if (err) {

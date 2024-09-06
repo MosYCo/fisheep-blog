@@ -1,9 +1,9 @@
 import path from "path";
 
-const BACKUP_PATH = "output/backup" as const;
-const PAGES_PATH = "output/pages" as const;
-const PAGER_PATH = "output/pager" as const;
-const TEMPLATE_PATH = "src/template" as const;
+export const ROOT_DIR = "docs" as const;
+export const BACKUP_PATH = "backup" as const;
+export const PAGES_PATH = `${ROOT_DIR}/pages` as const;
+export const TEMPLATE_PATH = "src/template" as const;
 
 /**
  * 获取备份MD文件路径
@@ -26,11 +26,7 @@ export const getPagesPath = (name: string) => {
  * @param {string} name
  */
 export const getPagerPath = (name: string) => {
-  if (name === 'index') {
-    return path.resolve(process.cwd(), "output/index.html");
-  } else {
-    return path.resolve(process.cwd(), `${PAGER_PATH}/${name}.html`);
-  }
+  return path.resolve(process.cwd(), `${ROOT_DIR}/${name}.html`);
 }
 
 /**
