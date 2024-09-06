@@ -18,7 +18,7 @@ const config = [
       typescript({
         tsconfig: './tsconfig.build.json'
       }),
-      // terser(),
+      terser(),
       dev({
         port: 8888,
       }),
