@@ -132,7 +132,8 @@ class Blog {
       created_at,
       updated_at,
       comments,
-      labels
+      labels,
+      body
     } = issueObj;
     const issue = {
       id,
@@ -143,6 +144,8 @@ class Blog {
       updatedDate: this.formatDate(updated_at),
       isLink: labels.findIndex(label => label.name.toLowerCase() === 'link') !== -1,
       isAbout: labels.findIndex(label => label.name.toLowerCase() === 'about') !== -1,
+      //  TODO 后续可能会调整此段逻辑
+      description: body.replace(new RegExp(/(?<!!)\[(.*?)\]\((.*?)\)/g), '$1').replaceAll("#", "").slice(0, 200) + '...'
     }
     return Object.assign(issue, {
       pageUrl: this.getIssuePageUrl(issue.isLink ? 'link' : issue.isAbout ? 'about' : issue.id.toString()),
@@ -239,8 +242,13 @@ class Blog {
    */
   async generatePageHtml(issue: Issue) {
     const content = await this.issueMarkdownToHtml(issue);
+    const { linkIssue, aboutIssue, title: blogTitle, subTitle: blogSubTitle } = this.blogConfig;
     const htmlStr = ejs.render(this.getTemplate('issue-page.ejs'), {
       ...issue,
+      blogTitle,
+      blogSubTitle,
+      linkIssue,
+      aboutIssue,
       content,
       currentYear: this.blogConfig.currentYear
     });

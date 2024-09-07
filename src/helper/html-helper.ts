@@ -8,7 +8,7 @@ class HtmlHelper {
   static miniHtml(htmlStr: string) {
     return minify(htmlStr, {
       //  去除空格
-      collapseWhitespace: process.env.NODE_ENV === 'dev',
+      collapseWhitespace: process.env.NODE_ENV !== 'dev',
       // 最小化CSS
       minifyCSS: true
     });

@@ -1,0 +1,242 @@
+:root, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  box-sizing: border-box;
+  color: #313131;
+  background-color: #FFF;
+  position: relative;
+  font-family:  -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  text-decoration: none;
+}
+.title-wrapper {
+  text-align: center;
+  background: linear-gradient(45deg, #313131, #414141);
+  color: #FFF;
+  position: relative;
+}
+.toggle-menu {
+  position: absolute;
+  top: 50%;
+  font-size: 24px;
+  transform: translateY(-50%);
+  left: 16px;
+  display: none;
+}
+.title {
+  font-size: 36px;
+  font-weight: 700;
+}
+.sub-title {
+  margin: 0;
+}
+.nav-menu {
+  text-align: center;
+  padding: 8px 4px;
+  margin: 0;
+  background-color: #ccc;
+}
+.nav-menu-item {
+  display: inline-block;
+  list-style: none;
+  margin: 0 8px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+}
+.nav-menu-item a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.nav-menu-item:hover {
+  border-bottom-color: #414141;
+}
+.container {
+  background-color: #414141;
+  min-height: 100%;
+}
+.content-inner {
+  margin: 0 auto;
+  width: 900px;
+}
+.post-header-wrapper {
+  text-align: center;
+}
+.post-title-wrapper {
+  font-size: 24px;
+  font-weight: 700;
+}
+a.post-title {
+  position: relative;
+}
+a.post-title:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #000;
+  visibility: hidden;
+  -webkit-transform: scaleX(0);
+  -moz-transform: scaleX(0);
+  -ms-transform: scaleX(0);
+  -o-transform: scaleX(0);
+  transform: scaleX(0);
+  transition-duration: .2s;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0s;
+  background-image: linear-gradient(90deg, #a166ab 0, #ef4e7b 25%, #f37055 50%, #ef4e7b 75%, #a166ab 100%);
+}
+a.post-title:hover:before {
+  transform: scaleX(1);
+  visibility: visible;
+}
+.post-site-wrapper {
+  font-size: 12px;
+  color: #999;
+  padding: 12px 0;
+}
+.posts-wrapper,
+.post-wrapper {
+  padding-top: 24px;
+}
+.post {
+  padding: 48px 36px 36px 36px;
+  margin-bottom: 24px;
+  border-radius: 4px;
+  background-color: #FFF;
+}
+.divider {
+  margin: 0 4px;
+}
+.post-label + .post-label {
+  margin-left: 4px;
+}
+.post-description {
+  font-size: 18px;
+  line-height: 2;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.post-actions-wrapper {
+  text-align: center;
+  margin-top: 8px;
+}
+.action-btn {
+  padding: 8px 15px;
+  color: #606162;
+  border: 1px solid #dedede;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  height: 32px;
+  justify-content: center;
+  outline: none;
+  border-radius: 4px;
+  line-height: 1;
+  box-sizing: border-box;
+}
+.action-btn:hover {
+  border-color: #ecf5ff;
+  color: #409eff;
+  background-color: #ecf5ff;
+}
+.footer {
+  background-color: #CCC;
+  padding: 24px 0;
+  text-align: center;
+  font-size: 12px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+@media(max-width: 900px) {
+  .container {
+    background-color: #FFF;
+  }
+  .content-inner {
+    width: 100%;
+  }
+  .posts-wrapper,
+  .post-wrapper {
+    padding-top: 0;
+  }
+  .post {
+    margin: 16px 8px;
+    padding-top: 24px;
+    box-shadow: 0 0 12px #ccc;
+  }
+  .nav-bar-wrapper {
+    position: relative;
+    top: initial;
+    z-index: 1000;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    box-shadow: 0 0 12px #333;
+  }
+  .nav-bar-slide-up {
+    animation: .1s linear 0s 1 alternate slide-up;
+  }
+  .nav-bar-wrapper-on {
+    height: 100px;
+    opacity: 1;
+    animation: .1s linear 0s 1 alternate slide-down;
+  }
+  .nav-menu {
+    text-align: left;
+    background-color: #fff;
+  }
+  .nav-menu-item {
+    display: block;
+    margin: 4px 16px;
+  }
+  .nav-menu-item a {
+    display: inline-block;
+  }
+  .toggle-menu {
+    display: block;
+    cursor: pointer;
+    color: #FFF;
+    z-index: 1000;
+  }
+}
+@keyframes slide-up {
+  from {
+    height: 100px;
+    opacity: 1;
+    display: block;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes slide-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: 100px;
+    opacity: 1;
+  }
+}

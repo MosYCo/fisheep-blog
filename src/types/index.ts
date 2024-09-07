@@ -16,6 +16,7 @@ export interface Issue {
   pageUrl: string;
   isLink?: boolean;
   isAbout?: boolean;
+  description: string;
 }
 
 export interface BlogConfig {

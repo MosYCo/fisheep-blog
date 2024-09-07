@@ -5,66 +5,117 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title><%= title%></title>
     <link href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" rel="stylesheet" />
-    <link href="./assets/css/font-awesome.min.css" rel="stylesheet" />
-    <style>
-        body {
-            padding: 20px;
-            margin: 10px auto;
-            min-width: 200px;
-            max-width: 900px;
-            font-size: 16px;
-            line-height: 1.2;
-        }
-        .header {
-            padding: 20px 0 10px 0;
-            border-bottom: 1px solid #d1d9e0;
-            margin-bottom: 10px;
-        }
-        .footer {
-            margin-top: 64px;
-        }
-        .footer-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-        .title {
-            font-size: 40px;
-            font-weight: bold;
-        }
-        @media (max-width: 600px) {
-            body {padding: 8px;}
-            .title {font-size: 36px;}
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../assets/lib/css/index.css" />
+    <script type="text/javascript" src="../assets/lib/js/util.js"></script>
 </head>
 <body>
-<div id="<%= id%>">
+<div id="<%= id%>" class="container">
     <header class="header">
-        <div class="header-left">
-            <div class="title"><%= title%></div>
-        </div>
-        <div class="header-right">
-            <div class="header-right--wrapper">
-
+        <div class="header-inner">
+            <div class="title-wrapper">
+              <span id="toggle-menu-btn" class="toggle-menu">
+                <i class="fa fa-fw fa-bars"></i>
+              </span>
+                <div class="title-meta">
+                    <a class="title" href="./index.html"><%= blogTitle%></a>
+                </div>
+                <% if (blogSubTitle) { %><p class="sub-title"><%= blogSubTitle%></p><% } %>
+            </div>
+            <div id="nav-bar" class="nav-bar-wrapper">
+                <ul class="nav-menu">
+                    <li class="nav-menu-item">
+                        <a href="../index.html">
+                            <i class="fa fa-fw fa-home"></i>
+                            首页
+                        </a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a <% if (linkIssue) {%>href="./link.html"<%}%>>
+                            <i class="fa fa-fw fa-link"></i>
+                            链接
+                        </a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a <% if (linkIssue) {%>href="./about.html"<%}%>>
+                            <i class="fa fa-fw fa-user"></i>
+                            关于
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </header>
     <main class="content">
-        <div class="markdown-body">
-            <%- content%>
+        <div class="content-inner">
+            <div class="post-wrapper">
+                <article class="post">
+                    <div class="post-header-wrapper">
+                        <div class="post-title-wrapper">
+                            <div class="post-title"><%= title%></div>
+                        </div>
+                        <div class="post-site-wrapper">
+                            <span class="post-create-date"><i class="fa fa-fw fa-calendar-plus-o"></i><%= createdDate%></span>
+                            <span class="divider">|</span>
+                            <span class="post-update-date"><i class="fa fa-fw fa-calendar-check-o"></i><%= updatedDate%></span>
+                            <% if (labels && labels.length) { %>
+                                <div class="post-labels-wrapper">
+                                    <% labels.forEach(label => { %>
+                                        <span class="post-label" title="<%= label.description%>" aria-label="<%= label.name%>" style="color: <%= label.color%>"><%= label.name%></span>
+                                    <% }) %>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="markdown-body post-content">
+                        <%- content%>
+                    </div>
+                </article>
+            </div>
         </div>
     </main>
     <footer class="footer">
-        <div class="footer-wrapper">
+        <div class="footer-inner">
             <div>
                 Copyright ©
                 <span class="current-year"><%= currentYear%></span>
-                <a href="https://mosyco.github.io" alt="moss">Fisheep</a>
+                <a href="https://mosyco.github.io">Fisheep</a>
             </div>
         </div>
     </footer>
 </div>
 </body>
+<script>
+  window.addEventListener('resize', debounce(() => {
+    const navBar = document.getElementById("nav-bar");
+    if (!navBar) {
+      return;
+    }
+    const width = document.body.clientWidth;
+    if (navBar.classList.contains("nav-bar-slide-up")) {
+      width > 900 && navBar.classList.remove('nav-bar-slide-up');
+    }
+    if (navBar.classList.contains("nav-bar-wrapper-on")) {
+      navBar.classList.remove('nav-bar-wrapper-on');
+    }
+  }));
+  const handleToggleMenu = () => {
+    const width = document.body.clientWidth;
+    if (width > 900) {
+      return;
+    }
+    const navBar = document.getElementById("nav-bar");
+    if (!navBar.classList.contains("nav-bar-slide-up")) {
+      navBar.classList.add('nav-bar-slide-up');
+    }
+    if (navBar.classList.contains("nav-bar-wrapper-on")) {
+      navBar.classList.remove('nav-bar-wrapper-on');
+    } else {
+      navBar.classList.add('nav-bar-wrapper-on');
+    }
+  }
+  document.getElementById("toggle-menu-btn").onclick = () => {
+    handleToggleMenu();
+  }
+</script>
 </html>
