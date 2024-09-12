@@ -121,6 +121,20 @@ a.post-title:hover:before {
   border-radius: 4px;
   background-color: #FFF;
 }
+.comments-wrapper {
+  padding: 24px;
+  border-radius: 4px;
+  background-color: #FFF;
+}
+#show-comments-btn {
+  width: 100%;
+}
+.comments-count {
+  border-radius: 12px;
+  padding: 2px 12px;
+  background-color: #dedede;
+  margin-left: 8px;
+}
 .divider {
   margin: 0 4px;
 }
@@ -186,6 +200,9 @@ a.post-title:hover:before {
     margin: 16px 8px;
     padding-top: 24px;
     box-shadow: 0 0 12px #ccc;
+  }
+  .comments-wrapper {
+    padding: 8px;
   }
   .nav-bar-wrapper {
     position: relative;

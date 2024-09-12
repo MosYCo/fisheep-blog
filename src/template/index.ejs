@@ -85,44 +85,11 @@
         <div>
           Copyright ©
           <span class="current-year"><%= currentYear%></span>
-          <a href="https://mosyco.github.io">Fisheep</a>
+          <a href="<%= footerUrl%>" ><%= footerTitle%></a>
         </div>
       </div>
     </footer>
   </div>
 </body>
-<script>
-
-  window.addEventListener('resize', debounce(() => {
-    const navBar = document.getElementById("nav-bar");
-    if (!navBar) {
-      return;
-    }
-    const width = document.body.clientWidth;
-    if (navBar.classList.contains("nav-bar-slide-up")) {
-      width > 900 && navBar.classList.remove('nav-bar-slide-up');
-    }
-    if (navBar.classList.contains("nav-bar-wrapper-on")) {
-      navBar.classList.remove('nav-bar-wrapper-on');
-    }
-  }));
-  const handleToggleMenu = () => {
-    const width = document.body.clientWidth;
-    if (width > 900) {
-      return;
-    }
-    const navBar = document.getElementById("nav-bar");
-    if (!navBar.classList.contains("nav-bar-slide-up")) {
-      navBar.classList.add('nav-bar-slide-up');
-    }
-    if (navBar.classList.contains("nav-bar-wrapper-on")) {
-      navBar.classList.remove('nav-bar-wrapper-on');
-    } else {
-      navBar.classList.add('nav-bar-wrapper-on');
-    }
-  }
-  document.getElementById("toggle-menu-btn").onclick = () => {
-    handleToggleMenu();
-  }
-</script>
+<script type="text/javascript" src="./assets/lib/js/nav-bar.js"></script>
 </html>

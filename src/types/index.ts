@@ -19,19 +19,29 @@ export interface Issue {
   description: string;
 }
 
-export interface BlogConfig {
-  title: string;
-  subTitle: string;
+export interface RuntimeBlogConfig {
+  repo: string;
   linkIssue: Issue | null;
   aboutIssue: Issue | null;
   pageIssueList: Issue[];
   labels: Label[];
   totalCount: number;
-  language: 'CN' | "EN";
   pageSize: number;
   totalPages: number;
   currentYear: number;
 }
+
+export interface IConfig {
+  title: string;
+  subTitle: string;
+  email: string;
+  language: 'CN' | "EN";
+  footerUrl?: string;
+  footerTitle?: string;
+  enableComments?: boolean;
+}
+
+export type BlogConfig = IConfig & RuntimeBlogConfig;
 
 export interface GithubLabel {
   /**

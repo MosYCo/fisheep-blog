@@ -1,7 +1,6 @@
 import fs from "node:fs";
 import ejs from "ejs";
 import {BlogConfig, GithubIssue, GithubLabel, Issue, Label} from "../types";
-import Config from '../config/config.json';
 import {
   getTemplatePath,
   getBackupPath,
@@ -13,6 +12,7 @@ import Log from "./log";
 import Github from "./github";
 import GithubApi from "./github";
 import dayjs from "dayjs";
+import ConfigHelper from './config';
 
 /**
  * 博客API
@@ -39,10 +39,10 @@ class Blog {
   constructor(githubToken: string, private readonly repo: string) {
     const [owner, repoName] = this.repo.split('/');
     this.github = new GithubApi(githubToken, repoName, owner);
+    const config = ConfigHelper.getConfig();
     this.blogConfig = {
-      title: Config.title,
-      subTitle: Config.subTitle,
-      language: Config.language as any,
+      ...config,
+      repo: this.repo,
       pageIssueList: [],
       labels: [],
       totalCount: 0,
@@ -242,15 +242,10 @@ class Blog {
    */
   async generatePageHtml(issue: Issue) {
     const content = await this.issueMarkdownToHtml(issue);
-    const { linkIssue, aboutIssue, title: blogTitle, subTitle: blogSubTitle } = this.blogConfig;
     const htmlStr = ejs.render(this.getTemplate('issue-page.ejs'), {
+      blog: this.blogConfig,
       ...issue,
-      blogTitle,
-      blogSubTitle,
-      linkIssue,
-      aboutIssue,
-      content,
-      currentYear: this.blogConfig.currentYear
+      content
     });
     fs.writeFileSync(issue.pageUrl, HtmlHelper.miniHtml(htmlStr), 'utf-8');
     Log.log(`Generate page html: ${issue.pageUrl}`);

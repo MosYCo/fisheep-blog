@@ -18,9 +18,9 @@
                 <i class="fa fa-fw fa-bars"></i>
               </span>
                 <div class="title-meta">
-                    <a class="title" href="./index.html"><%= blogTitle%></a>
+                    <a class="title" href="./index.html"><%= blog.title%></a>
                 </div>
-                <% if (blogSubTitle) { %><p class="sub-title"><%= blogSubTitle%></p><% } %>
+                <% if (blog.subTitle) { %><p class="sub-title"><%= blog.subTitle%></p><% } %>
             </div>
             <div id="nav-bar" class="nav-bar-wrapper">
                 <ul class="nav-menu">
@@ -31,13 +31,13 @@
                         </a>
                     </li>
                     <li class="nav-menu-item">
-                        <a <% if (linkIssue) {%>href="./link.html"<%}%>>
+                        <a <% if (blog.linkIssue) {%>href="./link.html"<%}%>>
                             <i class="fa fa-fw fa-link"></i>
                             链接
                         </a>
                     </li>
                     <li class="nav-menu-item">
-                        <a <% if (linkIssue) {%>href="./about.html"<%}%>>
+                        <a <% if (blog.linkIssue) {%>href="./about.html"<%}%>>
                             <i class="fa fa-fw fa-user"></i>
                             关于
                         </a>
@@ -72,50 +72,60 @@
                     </div>
                 </article>
             </div>
+            <% if (blog.enableComments) {%>
+            <div class="comments-wrapper">
+                <button class="action-btn" onclick="openComments()" id="show-comments-btn">评论<span class="comments-count"><%= commentNum%></span></button>
+                <div class="comments" id="comments"></div>
+            </div>
+            <% } %>
         </div>
     </main>
     <footer class="footer">
         <div class="footer-inner">
             <div>
                 Copyright ©
-                <span class="current-year"><%= currentYear%></span>
-                <a href="https://mosyco.github.io">Fisheep</a>
+                <span class="current-year"><%= blog.currentYear%></span>
+                <a href="<%= blog.footerUrl%>" ><%= blog.footerTitle%></a>
             </div>
         </div>
     </footer>
 </div>
 </body>
+<script type="text/javascript" src="../assets/lib/js/nav-bar.js"></script>
 <script>
-  window.addEventListener('resize', debounce(() => {
-    const navBar = document.getElementById("nav-bar");
-    if (!navBar) {
-      return;
-    }
-    const width = document.body.clientWidth;
-    if (navBar.classList.contains("nav-bar-slide-up")) {
-      width > 900 && navBar.classList.remove('nav-bar-slide-up');
-    }
-    if (navBar.classList.contains("nav-bar-wrapper-on")) {
-      navBar.classList.remove('nav-bar-wrapper-on');
-    }
-  }));
-  const handleToggleMenu = () => {
-    const width = document.body.clientWidth;
-    if (width > 900) {
-      return;
-    }
-    const navBar = document.getElementById("nav-bar");
-    if (!navBar.classList.contains("nav-bar-slide-up")) {
-      navBar.classList.add('nav-bar-slide-up');
-    }
-    if (navBar.classList.contains("nav-bar-wrapper-on")) {
-      navBar.classList.remove('nav-bar-wrapper-on');
-    } else {
-      navBar.classList.add('nav-bar-wrapper-on');
+<% if (blog.enableComments) { %>
+let commentsTimer = null;
+let utterancesLoad = false;
+const openComments = () => {
+  const comments = document.getElementById("comments");
+  const commentBtn = document.getElementById("show-comments-btn");
+  commentBtn.innerHTML = "loading";
+  const span = document.createElement("span");
+  span.setAttribute("class","AnimatedEllipsis");
+  commentBtn.appendChild(span);
+
+  const script = document.createElement("script");
+  script.setAttribute("src","https://utteranc.es/client.js");
+  script.setAttribute("repo","<%= blog.repo%>");
+  script.setAttribute("issue-term","title");
+  script.setAttribute("theme","github-light");
+  script.setAttribute("crossorigin","anonymous");
+  script.setAttribute("async","");
+  comments.appendChild(script);
+  commentsTimer = setInterval("iFrameLoading()",200);
+};
+const iFrameLoading = () => {
+  const utterances = document.getElementsByClassName('utterances');
+  if(utterances.length === 1){
+    if(utterances[0].style.height !== ""){
+      utterancesLoad = true;
+      window.clearInterval(commentsTimer);
+      commentsTimer = null;
+      document.getElementById("show-comments-btn").style.display="none";
     }
   }
-  document.getElementById("toggle-menu-btn").onclick = () => {
-    handleToggleMenu();
-  }
+}
+
+<% } %>
 </script>
 </html>
