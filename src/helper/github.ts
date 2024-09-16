@@ -21,7 +21,8 @@ class GithubApi {
     return new Promise(resolve => {
       this.octokit.paginate("GET /repos/{owner}/{repo}/issues", {
         owner: this.owner,
-        repo: this.repoName
+        repo: this.repoName,
+        sort: 'updated'
       }).then((issues: GithubIssue[]) => {
         resolve(issues || []);
       }).catch(() => {

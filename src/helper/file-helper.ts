@@ -1,8 +1,6 @@
 import fs from "node:fs";
-import * as process from "node:process";
+import process from "node:process";
 import {
-  ROOT_DIR,
-  BACKUP_PATH,
   ASSETS_PATH,
   ASSETS_OUT_DIR
 } from '../config/path-config';
@@ -11,36 +9,40 @@ import Log from "./log";
 
 class FileHelper {
   static async clearOutputFile() {
-    await this.createDir(ROOT_DIR);
-    await this.createDir(BACKUP_PATH);
-    await this.createDir(`/${ROOT_DIR}/pages`);
+    this.deleteDir('docs');
+    this.deleteDir("backup");
     this.copyAssets();
   }
 
-  protected static createDir(dir: string) {
-    return new Promise<void>(resolve => {
-      const dirPath = process.cwd() + `${dir.startsWith('/') ? dir : '/' + dir}`;
-      fs.access(dirPath, (err) => {
-        Log.log("===========================================");
-        if (err) {
-          fs.mkdirSync(dirPath);
-          Log.log("The directory does not exist, create it...");
-        } else {
-          Log.log("The directory already exists, start clearing files...");
-          const files = fs.readdirSync(dirPath);
-          for (let file of files) {
-            const filePath = `${dirPath}/${file}`;
-            if (!fs.lstatSync(filePath).isDirectory()) {
-              fs.unlinkSync(filePath);
-              Log.log("Deleting files:", filePath);
-            }
+  static deleteDir(dirPath: string) {
+    const basePath = path.resolve(process.cwd(), dirPath);
+    Log.log("==================== Regenerate directory ====================");
+    try {
+      fs.accessSync(basePath);
+      fs.rmSync(basePath, { recursive: true });
+      Log.log(`Delete directory ${basePath} successfully...`);
+    } catch {
 
-          }
-          Log.log("Deleting files successfully...")
-        }
-        resolve();
-      });
-    })
+    } finally {
+      fs.mkdirSync(basePath);
+      Log.log(`Create directory ${basePath} successfully...`);
+    }
+  }
+
+  static createFile(filePath: string, data: string) {
+    const createDir = (p: string) => {
+      try {
+        fs.accessSync(p);
+      } catch {
+        const parentPath = path.dirname(p);
+        createDir(parentPath);
+        fs.mkdirSync(p);
+      }
+    };
+    const basePath = path.resolve(process.cwd(), filePath);
+    const dirPath = path.dirname(basePath);
+    createDir(dirPath);
+    fs.writeFileSync(basePath, data, 'utf-8');
   }
 
   private static copyAssets() {

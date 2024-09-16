@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<%- include('header') %>
+<body>
+  <div class="container">
+    <%-include('content-header')%>
+    <main class="content">
+      <div class="content-inner">
+        <section class="posts-wrapper">
+          <% pageIssueList.forEach((issue) => { %>
+          <article class="post">
+            <div class="post-header-wrapper">
+              <div class="post-title-wrapper">
+                <a class="link-btn post-title" href="/docs/posts/<%= issue.id%>.html"><%= issue.title%></a>
+              </div>
+              <div class="post-site-wrapper">
+                <span class="post-create-date"><i class="fa fa-fw fa-calendar-plus-o"></i><%= issue.createdDate%></span>
+                <span class="divider">|</span>
+                <span class="post-update-date"><i class="fa fa-fw fa-calendar-check-o"></i><%= issue.updatedDate%></span>
+                <% if (issue.labels && issue.labels.length) { %>
+                <div class="post-labels-wrapper">
+                  <% issue.labels.forEach(label => { %>
+                  <span class="post-label" title="<%= label.description%>" aria-label="<%= label.name%>" style="color: <%= label.color%>"><%= label.name%></span>
+                  <% }) %>
+                </div>
+                <% } %>
+              </div>
+            </div>
+            <div class="post-description">
+              <%- issue.description%>
+            </div>
+            <div class="post-actions-wrapper">
+              <a class="link-btn action-btn" href="/docs/posts/<%= issue.id%>.html">
+                阅读原文
+              </a>
+            </div>
+          </article>
+          <% }) %>
+        </section>
+        <%-include('pagination')%>
+      </div>
+    </main>
+    <%-include('content-footer')%>
+  </div>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span id="scroll-percent"></span>
+  </div>
+</body>
+<%-include('footer') %>
+</html>

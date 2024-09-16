@@ -1,18 +1,13 @@
 import fs from "node:fs";
-import ejs from "ejs";
-import {BlogConfig, GithubIssue, GithubLabel, Issue, Label} from "../types";
+import { BlogConfig, GithubIssue, GithubLabel, Issue, Label } from "../types";
 import {
-  getTemplatePath,
   getBackupPath,
-  getPagesPath,
-  getPagerPath
 } from '../config/path-config';
-import HtmlHelper from "./html-helper";
 import Log from "./log";
-import Github from "./github";
 import GithubApi from "./github";
 import dayjs from "dayjs";
 import ConfigHelper from './config';
+import EjsHelper from './ejs-helper';
 
 /**
  * 博客API
@@ -23,7 +18,7 @@ class Blog {
    * github api工具
    * @private
    */
-  private github: Github;
+  private github: GithubApi;
 
   /**
    * 博客配置
@@ -51,16 +46,8 @@ class Blog {
       currentYear: new Date().getFullYear(),
       linkIssue: null,
       aboutIssue: null
-    }
-  }
-
-  /**
-   * 获取Issue page url
-   * @param name
-   * @private
-   */
-  private getIssuePageUrl(name: string): string {
-    return getPagesPath(`${name}.html`);
+    };
+    EjsHelper.setTemplate(this.blogConfig.pageTemp || 'default');
   }
 
   /**
@@ -90,14 +77,6 @@ class Blog {
   }
 
   /**
-   * 获取模板
-   * @param fileName
-   */
-  getTemplate(fileName: string) {
-    return fs.readFileSync(getTemplatePath(fileName), 'utf-8');
-  }
-
-  /**
    * 转化Issue Label
    * @param labelObjs
    * @private
@@ -118,6 +97,10 @@ class Blog {
         default: label.default
       }
     })
+  }
+
+  private getPostOutputPath(name: string) {
+    return `posts/${name}.html`
   }
 
   /**
@@ -148,7 +131,7 @@ class Blog {
       description: body.replace(new RegExp(/(?<!!)\[(.*?)\]\((.*?)\)/g), '$1').replaceAll("#", "").slice(0, 200) + '...'
     }
     return Object.assign(issue, {
-      pageUrl: this.getIssuePageUrl(issue.isLink ? 'link' : issue.isAbout ? 'about' : issue.id.toString()),
+      pageUrl: this.getPostOutputPath(issue.isLink ? "link" : issue.isAbout ? "about" : issue.id.toString())
     });
   }
 
@@ -205,16 +188,14 @@ class Blog {
     let currentPage = 1;
     const { totalPages, pageSize } = this.blogConfig;
     while (currentPage <= totalPages) {
-      const htmlStr = ejs.render(this.getTemplate('index.ejs'), {
+      const name = currentPage === 1 ? 'index.html' : `pages/${currentPage}/index.html`;
+      EjsHelper.generate('index.ejs', {
         ...this.blogConfig,
         pageIssueList: this.blogConfig.pageIssueList.slice((currentPage - 1) * pageSize, currentPage * pageSize),
         currentPage,
         hasPrev: totalPages > 1 && currentPage > 1,
         hasNext: totalPages > 1 && currentPage < totalPages,
-      });
-      const name = currentPage === 1 ? 'index' : `page${currentPage}`;
-      fs.writeFileSync(getPagerPath(name), HtmlHelper.miniHtml(htmlStr), 'utf-8');
-      Log.log(`Generate pager html: ${name}.html`);
+      }, name)
       currentPage++;
     }
   }
@@ -242,13 +223,11 @@ class Blog {
    */
   async generatePageHtml(issue: Issue) {
     const content = await this.issueMarkdownToHtml(issue);
-    const htmlStr = ejs.render(this.getTemplate('issue-page.ejs'), {
+    EjsHelper.generate('post.ejs', {
       blog: this.blogConfig,
       ...issue,
       content
-    });
-    fs.writeFileSync(issue.pageUrl, HtmlHelper.miniHtml(htmlStr), 'utf-8');
-    Log.log(`Generate page html: ${issue.pageUrl}`);
+    }, issue.pageUrl);
   }
 
   /**

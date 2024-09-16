@@ -1,51 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title><%= title%></title>
-    <link href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="../assets/lib/css/index.css" />
-    <script type="text/javascript" src="../assets/lib/js/util.js"></script>
-</head>
+<%- include('header') %>
 <body>
 <div id="<%= id%>" class="container">
-    <header class="header">
-        <div class="header-inner">
-            <div class="title-wrapper">
-              <span id="toggle-menu-btn" class="toggle-menu">
-                <i class="fa fa-fw fa-bars"></i>
-              </span>
-                <div class="title-meta">
-                    <a class="title" href="./index.html"><%= blog.title%></a>
-                </div>
-                <% if (blog.subTitle) { %><p class="sub-title"><%= blog.subTitle%></p><% } %>
-            </div>
-            <div id="nav-bar" class="nav-bar-wrapper">
-                <ul class="nav-menu">
-                    <li class="nav-menu-item">
-                        <a href="../index.html">
-                            <i class="fa fa-fw fa-home"></i>
-                            首页
-                        </a>
-                    </li>
-                    <li class="nav-menu-item">
-                        <a <% if (blog.linkIssue) {%>href="./link.html"<%}%>>
-                            <i class="fa fa-fw fa-link"></i>
-                            链接
-                        </a>
-                    </li>
-                    <li class="nav-menu-item">
-                        <a <% if (blog.linkIssue) {%>href="./about.html"<%}%>>
-                            <i class="fa fa-fw fa-user"></i>
-                            关于
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </header>
+    <%- include('content-header', blog) %>
     <main class="content">
         <div class="content-inner">
             <div class="post-wrapper">
@@ -80,18 +38,14 @@
             <% } %>
         </div>
     </main>
-    <footer class="footer">
-        <div class="footer-inner">
-            <div>
-                Copyright ©
-                <span class="current-year"><%= blog.currentYear%></span>
-                <a href="<%= blog.footerUrl%>" ><%= blog.footerTitle%></a>
-            </div>
-        </div>
-    </footer>
+    <%- include('content-footer', blog) %>
+</div>
+<div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span id="scroll-percent"></span>
 </div>
 </body>
-<script type="text/javascript" src="../assets/lib/js/nav-bar.js"></script>
+<%- include('footer') %>
 <script>
 <% if (blog.enableComments) { %>
 let commentsTimer = null;

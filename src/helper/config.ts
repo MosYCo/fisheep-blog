@@ -11,6 +11,7 @@ const DEFAULT_CONFIG: IConfig = {
   language: "CN",
   footerUrl: "https://github.com/MosYCo/fisheep-blog",
   footerTitle: "Fisheep",
+  pageTemp: "default",
   enableComments: true
 } as const;
 

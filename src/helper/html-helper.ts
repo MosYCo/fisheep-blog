@@ -6,12 +6,13 @@ import * as process from "node:process";
  */
 class HtmlHelper {
   static miniHtml(htmlStr: string) {
-    return minify(htmlStr, {
-      //  去除空格
-      collapseWhitespace: process.env.NODE_ENV !== 'dev',
-      // 最小化CSS
-      minifyCSS: true
-    });
+    // return minify(htmlStr, {
+    //   //  去除空格
+    //   collapseWhitespace: process.env.NODE_ENV !== 'dev',
+    //   // 最小化CSS
+    //   minifyCSS: true
+    // });
+    return htmlStr;
   }
 }
 

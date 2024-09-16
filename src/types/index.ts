@@ -39,6 +39,7 @@ export interface IConfig {
   footerUrl?: string;
   footerTitle?: string;
   enableComments?: boolean;
+  pageTemp?: string;
 }
 
 export type BlogConfig = IConfig & RuntimeBlogConfig;

@@ -1,0 +1,29 @@
+<nav class="pagination">
+    <%if (hasPrev) {%>
+        <a class="prev" href="/docs/<% if (currentPage !== 2) { %>pages/<% currentPage - 1%>/<% } %>">
+            <i class="fa fa-angle-left"></i>
+        </a>
+    <% } else { %>
+        <span class="prev disabled" aria-disabled="true">
+    <i class="fa fa-angle-left"></i>
+</span>
+    <% } %>
+    <% if (totalPages < 6) { %>
+        <% for (let i = 1; i <= totalPages; i++) {%>
+            <% if (currentPage === i) {%>
+                <span class="page-num current-page"><%= i%></span>
+            <% } else {%>
+                <a class="page-num" href="/docs/<% if (i === 2) { %>pages/<% i%>/<% } %>"></a>
+            <% } %>
+        <% } %>
+    <% } %>
+    <%if (hasNext) {%>
+        <a class="next" href="/docs/pages/<%= currentPage + 1%>/">
+            <i class="fa fa-angle-right"></i>
+        </a>
+    <% } else { %>
+        <span class="next disabled" aria-disabled="true">
+       <i class="fa fa-angle-right"></i>
+    </span>
+    <% } %>
+</nav>
