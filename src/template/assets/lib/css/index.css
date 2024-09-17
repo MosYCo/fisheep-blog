@@ -220,6 +220,29 @@ a.post-title:hover:before {
   background-color: #EEE;
 }
 
+.pagination {
+  text-align: center;
+  padding: 12px 0;
+  background-color: #FFF;
+  border-radius: 4px;
+}
+
+.pagination .prev,
+.pagination .next,
+.page-num {
+  cursor: pointer;
+  background-color: #eee;
+}
+
+.page-num:hover {
+  border-color: transparent;
+}
+
+.page-num.current-page {
+  background-color: #00cccc;
+  color: #FFF;
+}
+
 @media(max-width: 900px) {
   .container {
     background-color: #FFF;

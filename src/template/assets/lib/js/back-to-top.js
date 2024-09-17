@@ -10,7 +10,7 @@ const backToTop = () => {
   window.addEventListener("scroll", (event) => {
     const el = document.documentElement;
     const percent = Math.round(el.scrollTop / (el.scrollHeight - el.clientHeight) * 100);
-    scrollPercent.innerHTML = percent + '%';
+    scrollPercent.innerHTML = `${percent >= 100 ? 100 : percent}%`;
     if (percent > 1) {
       if (!backToTopBtn.classList.contains("back-to-top-on")) {
         backToTopBtn.classList.add("back-to-top-on");
