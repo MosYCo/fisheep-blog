@@ -174,9 +174,9 @@ class Blog {
       if (repo) {
         const [owner, repoName] = this.repo.split('/');
         if (repo.owner.login === owner) {
-          this.blogConfig.rootPath = `${owner.toLowerCase()}.github.io`;
+          this.blogConfig.rootPath = `https://${owner.toLowerCase()}.github.io`;
         } else {
-          this.blogConfig.rootPath = `${repo.owner.login.toLowerCase()}.github.io/${repoName.toLowerCase()}`
+          this.blogConfig.rootPath = `https://${repo.owner.login.toLowerCase()}.github.io/${repoName.toLowerCase()}`
         }
       }
     }
