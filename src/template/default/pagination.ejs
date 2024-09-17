@@ -1,6 +1,6 @@
 <nav class="pagination">
     <%if (hasPrev) {%>
-        <a class="prev" href="/docs/<% if (currentPage !== 2) { %>pages/<% currentPage - 1%>/<% } %>">
+        <a class="prev" href="<%= rootPath%>/<% if (currentPage !== 2) { %>pages/<% currentPage - 1%>/index.html<% } %>">
             <i class="fa fa-angle-left"></i>
         </a>
     <% } else { %>
@@ -13,12 +13,12 @@
             <% if (currentPage === i) {%>
                 <span class="page-num current-page"><%= i%></span>
             <% } else {%>
-                <a class="page-num" href="/docs/<% if (i === 2) { %>pages/<% i%>/<% } %>"></a>
+                <a class="page-num" href="<%= rootPath%>/<% if (i === 2) { %>pages/<% i%>/index.html<% } %>"></a>
             <% } %>
         <% } %>
     <% } %>
     <%if (hasNext) {%>
-        <a class="next" href="/docs/pages/<%= currentPage + 1%>/">
+        <a class="next" href="<%= rootPath%>/pages/<%= currentPage + 1%>/index.html">
             <i class="fa fa-angle-right"></i>
         </a>
     <% } else { %>

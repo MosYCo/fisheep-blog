@@ -1,5 +1,11 @@
 import { Octokit } from "octokit";
-import { GithubIssue, GithubLabel } from "../types";
+import { components } from '@octokit/openapi-types';
+
+export type GithubIssue = components['schemas']['issue'];
+
+export type GithubLabel = components['schemas']['label'];
+
+export type GithubRepo = components['schemas']['repository'];
 
 /**
  * Github API封装
@@ -11,6 +17,26 @@ class GithubApi {
   constructor(private readonly githubToken: string, private readonly repoName: string, private readonly owner: string) {
     this.octokit = new Octokit({
       auth: this.githubToken,
+    });
+  }
+
+  getRepo() {
+    return new Promise<GithubRepo | null>(resolve => {
+      this.octokit.request("GET /repos/{owner}/{repo}", {
+        owner: this.owner,
+        repo: this.repoName,
+      }).then((res: {
+        status: number,
+        data: GithubRepo
+      }) => {
+        if (res && res.status === 200) {
+          resolve(res.data)
+        } else {
+          resolve(null);
+        }
+      }).catch(() => {
+        resolve(null);
+      });
     });
   }
 

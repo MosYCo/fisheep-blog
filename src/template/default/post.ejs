@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('header') %>
+<%- include('header', blog) %>
 <body>
 <div id="<%= id%>" class="container">
     <%- include('content-header', blog) %>
@@ -45,7 +45,7 @@
     <span id="scroll-percent"></span>
 </div>
 </body>
-<%- include('footer') %>
+<%- include('footer', blog) %>
 <script>
 <% if (blog.enableComments) { %>
 let commentsTimer = null;

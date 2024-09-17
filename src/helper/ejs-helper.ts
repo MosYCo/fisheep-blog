@@ -92,7 +92,7 @@ class Helper {
       filename
     });
     const outputFile = path.resolve(process.cwd(), this.outPutPath, outputPath);
-    FileHelper.createFile(outputFile, htmlStr);
+    FileHelper.createFileSync(outputFile, htmlStr);
     Log.log(`Generate HTML file ${outputPath} successfully`);
   }
 }

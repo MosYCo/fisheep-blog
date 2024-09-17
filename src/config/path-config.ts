@@ -14,27 +14,3 @@ export const ASSETS_OUT_DIR = `${ROOT_DIR}/assets` as const;
 export const getBackupPath = (name: string) => {
   return path.resolve(process.cwd(), BACKUP_PATH + '/' + name);
 }
-
-/**
- * 获取详情页面文件路径
- * @param {string} name
- */
-export const getPagesPath = (name: string) => {
-  return path.resolve(process.cwd(), PAGES_PATH + '/' + name);
-}
-
-/**
- * 获取分页页面文件路径
- * @param {string} name
- */
-export const getPagerPath = (name: string) => {
-  return path.resolve(process.cwd(), `${ROOT_DIR}/${name}.html`);
-}
-
-/**
- * 获取解析模板文件路径
- * @param {string} name
- */
-export const getTemplatePath = (name: string) => {
-  return path.resolve(process.cwd(), TEMPLATE_PATH + '/' + name);
-}

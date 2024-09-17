@@ -1,13 +1,12 @@
-import fs from "node:fs";
-import { BlogConfig, GithubIssue, GithubLabel, Issue, Label } from "../types";
-import {
-  getBackupPath,
-} from '../config/path-config';
+import { BlogConfig, Issue, Label } from "../types";
 import Log from "./log";
-import GithubApi from "./github";
+import GithubApi, { GithubIssue } from './github';
 import dayjs from "dayjs";
 import ConfigHelper from './config';
 import EjsHelper from './ejs-helper';
+import { FileHelper } from './index';
+import path from 'path';
+import * as process from 'node:process';
 
 /**
  * 博客API
@@ -45,7 +44,8 @@ class Blog {
       totalPages: 0,
       currentYear: new Date().getFullYear(),
       linkIssue: null,
-      aboutIssue: null
+      aboutIssue: null,
+      rootPath: path.resolve(process.cwd(), 'docs')
     };
     EjsHelper.setTemplate(this.blogConfig.pageTemp || 'default');
   }
@@ -67,13 +67,8 @@ class Blog {
    * @private
    */
   private issueBackup(issue: Issue, body: string) {
-    fs.writeFile(getBackupPath(issue.title + '.md'), body || "", 'utf-8', (err) => {
-      if (err) {
-        Log.log(`Save backup file error: ${issue.title}.md`);
-      } else {
-        Log.log(`Save backup file: ${issue.title}.md`);
-      }
-    });
+    FileHelper.createFileSync(`backup/${issue.title}.md`, body);
+    Log.log(`Save backup file ${issue.title}.md successfully.`)
   }
 
   /**
@@ -81,8 +76,8 @@ class Blog {
    * @param labelObjs
    * @private
    */
-  private transformIssueLabels(labelObjs: GithubLabel[] = []): Label[] {
-    return labelObjs.map(label => {
+  private transformIssueLabels(labelObjs: GithubIssue['labels']): Label[] {
+    return labelObjs.filter(label => typeof label !== 'string').map(label => {
       const {
         id,
         name,
@@ -95,7 +90,7 @@ class Blog {
         color: '#' + color,
         description,
         default: label.default
-      }
+      } as Label;
     })
   }
 
@@ -115,20 +110,20 @@ class Blog {
       created_at,
       updated_at,
       comments,
-      labels,
       body
     } = issueObj;
+    const labels = this.transformIssueLabels(issueObj.labels);
     const issue = {
       id,
       title,
-      labels: this.transformIssueLabels(issueObj.labels),
+      labels,
       commentNum: comments,
       createdDate: this.formatDate(created_at),
       updatedDate: this.formatDate(updated_at),
       isLink: labels.findIndex(label => label.name.toLowerCase() === 'link') !== -1,
       isAbout: labels.findIndex(label => label.name.toLowerCase() === 'about') !== -1,
       //  TODO 后续可能会调整此段逻辑
-      description: body.replace(new RegExp(/(?<!!)\[(.*?)\]\((.*?)\)/g), '$1').replaceAll("#", "").slice(0, 200) + '...'
+      description: body ? body.replace(new RegExp(/(?<!!)\[(.*?)\]\((.*?)\)/g), '$1').replaceAll("#", "").slice(0, 200) + '...' : ''
     }
     return Object.assign(issue, {
       pageUrl: this.getPostOutputPath(issue.isLink ? "link" : issue.isAbout ? "about" : issue.id.toString())
@@ -165,7 +160,7 @@ class Blog {
         this.blogConfig.pageIssueList.push(issue);
         count++;
       }
-      this.issueBackup(issue, githubIssue.body);
+      this.issueBackup(issue, githubIssue.body || "");
     }
     //  计算总条数与总页数, 要除去计入About和Link的数据
     const { pageSize } = this.blogConfig;
@@ -173,10 +168,26 @@ class Blog {
     this.blogConfig.totalPages = Math.floor(count / pageSize) + (count % pageSize !== 0 ? 1 : 0);
   }
 
+  async initRootPath() {
+    if (process.env.NODE_ENV !== 'dev') {
+      const repo = await this.github.getRepo();
+      if (repo) {
+        const [owner, repoName] = this.repo.split('/');
+        if (repo.owner.login === owner) {
+          this.blogConfig.rootPath = `${owner.toLowerCase()}.github.io`;
+        } else {
+          this.blogConfig.rootPath = `${repo.owner.login.toLowerCase()}.github.io/${repoName.toLowerCase()}`
+        }
+      }
+    }
+  }
+
   /**
    * 初始化Blog
    */
   async initBlog() {
+    await this.initRootPath();
+    await FileHelper.clearOutputFile();
     await this.getLabels();
     await this.getIssueList();
   }
@@ -206,14 +217,13 @@ class Blog {
    */
   issueMarkdownToHtml(issue: Issue): Promise<string> {
     return new Promise(resolve => {
-      fs.readFile(getBackupPath(issue.title + '.md'), 'utf-8', (err, data) => {
-        if (err) {
-          resolve("");
-          return Log.log(`Read markdown file error: ${issue.title}.md`);
-        } else {
-          this.github.markdownToHTML(data).then(htmlStr => resolve(htmlStr));
-        }
-      })
+      const data =  FileHelper.readFileSync(`backup/${issue.title}.md`);
+      if (data !== '') {
+        this.github.markdownToHTML(data).then(htmlStr => resolve(htmlStr));
+      } else {
+        resolve("");
+        return Log.log(`Read markdown file error: ${issue.title}.md`);
+      }
     });
   }
 

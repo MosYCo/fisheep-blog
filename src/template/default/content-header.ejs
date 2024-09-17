@@ -5,26 +5,26 @@
         <i class="fa fa-fw fa-bars"></i>
       </span>
       <div class="title-meta">
-        <a class="title link-btn" href="/docs/"><%= title%></a>
+        <a class="title link-btn" href="<%= rootPath%>/index.html"><%= title%></a>
       </div>
       <% if (subTitle) { %><p class="sub-title"><%= subTitle%></p><% } %>
     </div>
     <div id="nav-bar" class="nav-bar-wrapper">
       <ul class="nav-menu">
         <li class="nav-menu-item">
-          <a class="link-btn" href="/docs/">
+          <a class="link-btn" href="<%= rootPath%>/index.html">
             <i class="fa fa-fw fa-home"></i>
             首页
           </a>
         </li>
         <li class="nav-menu-item">
-          <a class="link-btn" <% if (linkIssue) {%>href="/docs/pages/link.html"<%}%>>
+          <a class="link-btn" <% if (linkIssue) {%>href="<%= rootPath%>/pages/link.html"<%}%>>
             <i class="fa fa-fw fa-link"></i>
             链接
           </a>
         </li>
         <li class="nav-menu-item">
-          <a class="link-btn" <% if (aboutIssue) {%>href="/docs/pages/about.html"<%}%>>
+          <a class="link-btn" <% if (aboutIssue) {%>href="<%= rootPath%>/pages/about.html"<%}%>>
             <i class="fa fa-fw fa-user"></i>
             关于
           </a>

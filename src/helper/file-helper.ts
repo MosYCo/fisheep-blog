@@ -1,5 +1,4 @@
 import fs from "node:fs";
-import process from "node:process";
 import {
   ASSETS_PATH,
   ASSETS_OUT_DIR
@@ -8,6 +7,7 @@ import path from "path";
 import Log from "./log";
 
 class FileHelper {
+
   static async clearOutputFile() {
     this.deleteDir('docs');
     this.deleteDir("backup");
@@ -29,7 +29,7 @@ class FileHelper {
     }
   }
 
-  static createFile(filePath: string, data: string) {
+  static createFileSync(filePath: string, data: string) {
     const createDir = (p: string) => {
       try {
         fs.accessSync(p);
@@ -43,6 +43,14 @@ class FileHelper {
     const dirPath = path.dirname(basePath);
     createDir(dirPath);
     fs.writeFileSync(basePath, data, 'utf-8');
+  }
+
+  static readFileSync(filePath: string) {
+    try {
+      return fs.readFileSync(path.resolve(process.cwd(), filePath), 'utf-8');
+    } catch {
+      return "";
+    }
   }
 
   private static copyAssets() {
