@@ -170,11 +170,11 @@ class Blog {
 
   async initRootPath() {
     if (process.env.NODE_ENV !== 'dev') {
-      const repo = await this.github.getRepo();
-      if (repo) {
-        if (repo.homepage) {
-          this.blogConfig.rootPath = repo.homepage;
-        } else {
+      if (this.blogConfig.homeUrl) {
+        this.blogConfig.rootPath = this.blogConfig.homeUrl;
+      } else {
+        const repo = await this.github.getRepo();
+        if (repo) {
           const [owner, repoName] = this.repo.split('/');
           if (repo.owner.login === owner) {
             this.blogConfig.rootPath = `https://${owner.toLowerCase()}.github.io`;

@@ -9,7 +9,7 @@ const DEFAULT_CONFIG: IConfig = {
   subTitle: "人生有梦，各自精彩",
   email: "moseternal@gmail.com",
   language: "CN",
-  footerUrl: "https://github.com/MosYCo/fisheep-blog",
+  homeUrl: "https://blog.fisheep.top",
   footerTitle: "Fisheep",
   pageTemp: "default",
   enableComments: true

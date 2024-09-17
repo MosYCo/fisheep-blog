@@ -37,7 +37,7 @@ export interface IConfig {
   subTitle: string;
   email: string;
   language: 'CN' | "EN";
-  footerUrl?: string;
+  homeUrl?: string;
   footerTitle?: string;
   enableComments?: boolean;
   pageTemp?: string;
