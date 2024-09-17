@@ -172,11 +172,15 @@ class Blog {
     if (process.env.NODE_ENV !== 'dev') {
       const repo = await this.github.getRepo();
       if (repo) {
-        const [owner, repoName] = this.repo.split('/');
-        if (repo.owner.login === owner) {
-          this.blogConfig.rootPath = `https://${owner.toLowerCase()}.github.io`;
+        if (repo.homepage) {
+          this.blogConfig.rootPath = repo.homepage;
         } else {
-          this.blogConfig.rootPath = `https://${repo.owner.login.toLowerCase()}.github.io/${repoName.toLowerCase()}`
+          const [owner, repoName] = this.repo.split('/');
+          if (repo.owner.login === owner) {
+            this.blogConfig.rootPath = `https://${owner.toLowerCase()}.github.io`;
+          } else {
+            this.blogConfig.rootPath = `https://${repo.owner.login.toLowerCase()}.github.io/${repoName.toLowerCase()}`
+          }
         }
       }
     }
